@@ -7,7 +7,7 @@ import './Header.css';
 
 function Header() {
   const [burgerIsOpen, setBurgerIsOpen] = useState(false);
-  const loggedIn = true; // временно, состояние будет передаваться из App
+  const loggedIn = false; // временно, состояние будет передаваться из App
 
   return (
     <div className='header'>

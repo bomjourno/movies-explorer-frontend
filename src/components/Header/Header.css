@@ -101,7 +101,7 @@
 .header__burger-text:last-child {
   display: flex;
   flex: 1 1;
-  align-items: end;
+  align-items: flex-end;
   margin: 0 0 60px 0;
   font-size: 14px;
   line-height: 16px;
@@ -210,5 +210,9 @@
 
   .header__burger-line {
     transform: scale(0.83);
+  }
+
+  .header__link_primary {
+    padding: 5px 12px;
   }
 }
