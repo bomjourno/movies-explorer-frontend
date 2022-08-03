@@ -6,7 +6,7 @@ import account from '../../images/account.svg';
 import './Header.css';
 
 function Header() {
-  const [burgerIsOpen, setBurgerIsOpen] = useState(false);
+  const [burgerMenuIsOpen, setBurgerMenuIsOpen] = useState(false);
   const loggedIn = false; // временно, состояние будет передаваться из App
 
   return (
@@ -53,21 +53,21 @@ function Header() {
           </nav>
           <div
             className='header__burger'
-            onClick={() => setBurgerIsOpen((prevVal) => !prevVal)}
+            onClick={() => setBurgerMenuIsOpen((prevVal) => !prevVal)}
           >
             <div
               className={classNames('header__burger-line', {
-                'header__burger-open': burgerIsOpen,
+                'header__burger-open': burgerMenuIsOpen,
               })}
             ></div>
             <div
               className={classNames('header__burger-line', {
-                'header__burger-open': burgerIsOpen,
+                'header__burger-open': burgerMenuIsOpen,
               })}
             ></div>
             <div
               className={classNames('header__burger-line', {
-                'header__burger-open': burgerIsOpen,
+                'header__burger-open': burgerMenuIsOpen,
               })}
             ></div>
           </div>
@@ -76,7 +76,7 @@ function Header() {
             className={classNames(
               'header__list header__burger-menu header__list_burger',
               {
-                'header__burger-menu_open': burgerIsOpen,
+                'header__burger-menu_open': burgerMenuIsOpen,
               },
             )}
           >
