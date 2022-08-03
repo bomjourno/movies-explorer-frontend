@@ -10,7 +10,7 @@ function Header() {
   const loggedIn = false; // временно, состояние будет передаваться из App
 
   return (
-    <div className='header'>
+    <header className='header'>
       <Link to='/'>
         <img src={logo} alt='Логотип' className='header__logo' />
       </Link>
@@ -127,7 +127,7 @@ function Header() {
           </ul>
         </nav>
       )}
-    </div>
+    </header>
   );
 }
 
