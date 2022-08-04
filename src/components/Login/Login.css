@@ -1,4 +1,4 @@
-.register {
+.login {
   display: flex;
   flex-direction: column;
   max-width: 456px;
@@ -9,20 +9,20 @@
   transition: all .4s;
 }
 
-.register__title {
+.login__title {
   margin: 40px 0 62px 0;
   font-weight: 500;
   font-size: 24px;
   line-height: 29px;
 }
 
-.register__form {
+.login__form {
   display: flex;
   flex-direction: column;
   gap: 42px;
 }
 
-.register__label {
+.login__label {
   position: relative;
   font-weight: 400;
   font-size: 10px;
@@ -30,25 +30,25 @@
   color: #A0A0A0;
 }
 
-.register__label:first-child:before {
+.login__label:first-child:before {
   position: absolute;
   top: -25px;
   content: "Имя";
 }
 
-.register__label:nth-child(2)::before {
+.login__label:nth-child(2)::before {
   position: absolute;
   top: -25px;
   content: "E-mail";
 }
 
-.register__label:nth-child(3)::before {
+.login__label:nth-child(3)::before {
   position: absolute;
   top: -25px;
   content: "Пароль";
 }
 
-.register__input {
+.login__input {
   width: 100%;
   padding: 15px;
   font-weight: 400;
@@ -62,12 +62,12 @@
   box-sizing: border-box;
 }
 
-.register__input:focus {
+.login__input:focus {
   background-color: rgba(200, 200, 200, 0.6);
 }
 
-.register__button {
-  margin: 49px 0 0 0;
+.login__button {
+  margin: 137px 0 0 0;
   padding: 13px 0 15px 0;
   font-weight: 500;
   font-size: 14px;
@@ -78,7 +78,7 @@
   border-radius: 3px;
 }
 
-.register__link-container {
+.login__link-container {
   display: flex;
   justify-content: center;
   margin: 16px 0 0 0;
@@ -87,28 +87,28 @@
   line-height: 17px;
 }
 
-.register__link-text {
+.login__link-text {
   margin: 0;
   color: #A0A0A0;
 }
 
-.register__link {
+.login__link {
   color: #000;
   text-decoration: none;
 }
 
 @media screen and (max-width: 768px) {
-  .register {
+  .login {
     padding: 232px 30px 70px;
   }
 }
 
 @media screen and (max-width: 500px) {
-  .register {
+  .login {
     padding: 56px 30px 30px;
   }
 
-  .register__title {
+  .login__title {
     margin: 50px 0 102px 0;
     font-weight: 500;
     font-size: 24px;
@@ -116,18 +116,18 @@
     text-align: center;
   }
 
-  .register__logo {
+  .login__logo {
     display: flex;
     margin: 0 auto;
   }
 
-  .register__button {
-    margin: 137px 0 0 0;
+  .login__button {
+    margin: 225px 0 0 0;
     font-size: 12px;
     line-height: 15px;
   }
 
-  .register__link-container {
+  .login__link-container {
     margin: 14px 0 0 0;
     font-size: 12px;
     line-height: 15px;
