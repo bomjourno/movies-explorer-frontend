@@ -29,7 +29,7 @@
   color: #A0A0A0;
 }
 
-.card__save-button {
+.card__button {
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -39,12 +39,30 @@
   cursor: pointer;
 }
 
-.card__save-button_active {
+.card__button-delete {
+  background: no-repeat center/contain url(../../images/delete_button.svg);
+}
+
+.card__button:hover {
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.card__button_active {
   background-image: url(../../images/save-button_active.svg);
+}
+
+.card__button_active:hover {
+  opacity: .8;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
 }
 
 .card__trailer-link {
   max-height: 203px;
+  transition: all .4s;
+}
+
+.card__trailer-link:hover {
+  opacity: .8;
 }
 
 .card__image {

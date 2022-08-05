@@ -45,6 +45,17 @@
   cursor: pointer;
 }
 
+.promo__list-item:hover {
+  background-color: #bdbdbd;
+  opacity: .8;
+}
+
+.promo__list-link {
+  width: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
 @media screen and (max-width:768px) {
   .promo__title {
     max-width: 680px;

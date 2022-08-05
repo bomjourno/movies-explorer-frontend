@@ -22,6 +22,11 @@
   background: #F9F9F9;
   border: 0;
   border-radius: 8px;
+  transition: all .4s;
+}
+
+.search__form-input:focus {
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
 }
 
 .search__form-submit {
@@ -34,7 +39,12 @@
   background-color: #000;
   border: 0;
   border-radius: 8px;
+  transition: all .4s;
   cursor: pointer;
+}
+
+.search__form-submit:hover {
+  opacity: .6;
 }
 
 @media screen and (max-width: 768px) {

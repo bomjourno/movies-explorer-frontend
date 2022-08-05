@@ -11,17 +11,19 @@ import './Main.css';
 
 function Main() {
   return (
-    <main className='content'>
+    <>
       <Header />
-      <Promo>
-        <NavTab />
-      </Promo>
-      <AboutProject />
-      <Techs />
-      <AboutMe />
-      <Portfolio />
+      <main className='content'>
+        <Promo>
+          <NavTab />
+        </Promo>
+        <AboutProject />
+        <Techs />
+        <AboutMe />
+        <Portfolio />
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }
 

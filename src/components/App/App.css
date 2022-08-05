@@ -14,3 +14,7 @@
   text-rendering: optimizeLegibility;
   color: #000;
 }
+
+html {
+  scroll-behavior: smooth;
+}

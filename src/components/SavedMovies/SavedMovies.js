@@ -4,13 +4,13 @@ import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
-import './Movies.css';
+import './SavedMovies.css';
 
-function Movies() {
+function SavedMovies() {
   return (
     <>
       <Header />
-      <main className='movies'>
+      <main className='movies saved-movies'>
         <SearchForm>
           <FilterCheckbox />
         </SearchForm>
@@ -21,4 +21,4 @@ function Movies() {
   );
 }
 
-export default Movies;
+export default SavedMovies;

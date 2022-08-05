@@ -4,9 +4,21 @@ function NavTab() {
   return (
     <nav>
       <ul className='promo__list'>
-        <li className='promo__list-item'>О проекте</li>
-        <li className='promo__list-item'>Технологии</li>
-        <li className='promo__list-item'>Студент</li>
+        <li className='promo__list-item'>
+          <a className='promo__list-link' href='#project'>
+            О проекте
+          </a>
+        </li>
+        <li className='promo__list-item'>
+          <a className='promo__list-link' href='#tech'>
+            Технологии
+          </a>
+        </li>
+        <li className='promo__list-item'>
+          <a className='promo__list-link' href='#student'>
+            Студент
+          </a>
+        </li>
       </ul>
     </nav>
   );

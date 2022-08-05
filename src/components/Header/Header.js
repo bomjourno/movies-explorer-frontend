@@ -1,13 +1,15 @@
 import classNames from 'classnames';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import logo from '../../images/logo.svg';
 import account from '../../images/account.svg';
 import './Header.css';
 
 function Header() {
   const [burgerMenuIsOpen, setBurgerMenuIsOpen] = useState(false);
-  const loggedIn = true; // временно Для показа состояний шапки
+  const location = useLocation();
+  const isActiveTab = location.pathname;
+  const loggedIn = false; // временно Для показа состояний шапки
 
   return (
     <header className='header'>
@@ -20,13 +22,23 @@ function Header() {
           <nav className='header__navigation'>
             <ul className='header__list header__list_authorized'>
               <li className='header__list-item'>
-                <Link to='/movies' className='header__link'>
+                <Link
+                  to='/movies'
+                  className={classNames('header__link header__tab', {
+                    header__tab_active: isActiveTab === '/movies',
+                  })}
+                >
                   Фильмы
                 </Link>
               </li>
 
               <li className='header__list-item'>
-                <Link to='/saved-movies' className='header__link'>
+                <Link
+                  to='/saved-movies'
+                  className={classNames('header__link header__tab', {
+                    header__tab_active: isActiveTab === '/saved-movies',
+                  })}
+                >
                   Сохранённые фильмы
                 </Link>
               </li>
@@ -119,8 +131,8 @@ function Header() {
               </Link>
             </li>
 
-            <li className='header__link_primary'>
-              <Link to='/sign-in' className='header__link'>
+            <li>
+              <Link to='/sign-in' className='header__link header__link_primary'>
                 Войти
               </Link>
             </li>
