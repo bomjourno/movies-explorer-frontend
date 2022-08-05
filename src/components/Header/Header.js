@@ -7,7 +7,7 @@ import './Header.css';
 
 function Header() {
   const [burgerMenuIsOpen, setBurgerMenuIsOpen] = useState(false);
-  const loggedIn = false; // временно Для показа состояний шапки
+  const loggedIn = true; // временно Для показа состояний шапки
 
   return (
     <header className='header'>
