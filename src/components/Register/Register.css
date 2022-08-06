@@ -1,0 +1,147 @@
+.register {
+  display: flex;
+  flex-direction: column;
+  max-width: 456px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 70px 30px;
+  box-sizing: border-box;
+  transition: all .4s;
+}
+
+.register__title {
+  margin: 40px 0 62px 0;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+}
+
+.register__form {
+  display: flex;
+  flex-direction: column;
+  gap: 42px;
+}
+
+.register__label {
+  position: relative;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #A0A0A0;
+}
+
+.register__label:first-child:before {
+  position: absolute;
+  top: -25px;
+  content: "Имя";
+}
+
+.register__label:nth-child(2)::before {
+  position: absolute;
+  top: -25px;
+  content: "E-mail";
+}
+
+.register__label:nth-child(3)::before {
+  position: absolute;
+  top: -25px;
+  content: "Пароль";
+}
+
+.register__input {
+  width: 100%;
+  padding: 15px;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  outline: 0;
+  border: 0;
+  background: #F9F9F9;
+  border-radius: 8px;
+  transition: all .4s;
+  box-sizing: border-box;
+}
+
+.register__input:focus {
+  background-color: rgba(200, 200, 200, 0.6);
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+}
+
+.register__button {
+  margin: 49px 0 0 0;
+  padding: 13px 0 15px 0;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: #fff;
+  background: #000000;
+  border: 0;
+  border-radius: 3px;
+  transition: all .4s;
+  cursor: pointer;
+}
+
+.register__button:hover {
+  opacity: .8;
+}
+
+.register__link-container {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0 0 0;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.register__link-text {
+  margin: 0;
+  color: #A0A0A0;
+}
+
+.register__link {
+  color: #000;
+  text-decoration: none;
+  transition: all .4s;
+}
+
+.register__link:hover {
+  opacity: .6;
+}
+
+@media screen and (max-width: 768px) {
+  .register {
+    padding: 232px 30px 70px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .register {
+    padding: 56px 30px 30px;
+  }
+
+  .register__title {
+    margin: 50px 0 102px 0;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+  }
+
+  .register__logo {
+    display: flex;
+    margin: 0 auto;
+  }
+
+  .register__button {
+    margin: 137px 0 0 0;
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .register__link-container {
+    margin: 14px 0 0 0;
+    font-size: 12px;
+    line-height: 15px;
+  }
+}
