@@ -20,7 +20,9 @@ function MoviesCardList() {
         <MoviesCard />
       </div>
       {location.pathname === '/movies' ? (
-        <button className='cards__button'>Ещё</button>
+        <button type='button' className='cards__button'>
+          Ещё
+        </button>
       ) : (
         ''
       )}

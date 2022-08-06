@@ -54,7 +54,10 @@ function Profile() {
               Редактировать
             </button>
           </form>
-          <button className='profile__button profile__button_logout'>
+          <button
+            type='button'
+            className='profile__button profile__button_logout'
+          >
             Выйти из аккаунта
           </button>
         </div>

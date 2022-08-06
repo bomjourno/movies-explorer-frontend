@@ -17,6 +17,7 @@ function MoviesCard() {
           <p className='card__duration'>1ч 47м</p>
         </div>
         <button
+          type='button'
           className={classNames('card__button', {
             card__button_active: isSavedMovies ? false : isSaved,
             'card__button-delete': isSavedMovies,
