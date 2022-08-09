@@ -11,3 +11,9 @@ export const THREE_MOVIES_FOR_MORE_BUTTON = 3;
 export const TWO_MOVIES_FOR_MORE_BUTTON = 2;
 
 export const MAX_DURATION_SHORT_MOVIES = 40;
+
+export const infoMessages = {
+  moviesNotFound: 'Ничего не найдено',
+  requestMoviesFailed:
+    'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз',
+};

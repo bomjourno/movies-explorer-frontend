@@ -1,12 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { MAX_DURATION_SHORT_MOVIES } from '../../utils/constants';
 
 export const movieSlice = createSlice({
   name: 'movie',
   initialState: {
     movies: [],
     savedMovies: [],
-    isLoading: false,
     error: '',
+    movieForSearch: '',
+    isLoading: false,
+    isShortMovie: false,
   },
   reducers: {
     moviesFetching(state) {
@@ -21,6 +24,15 @@ export const movieSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
+    searchingMovie(state, action) {
+      state.movieForSearch = action.payload;
+    },
+    toggleShortMovies(state, action) {
+      state.isShortMovie = action.payload;
+    },
+    saveMovie(state, action) {
+      state.savedMovies = action.payload;
+    }
   },
 });
 

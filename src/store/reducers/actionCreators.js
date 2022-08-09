@@ -1,14 +1,13 @@
 import moviesApi from '../../utils/Api/MoviesApi';
 import { movieSlice } from './movieSlice';
 
-const fetchMovies = () => async (dispatch) => {
+export const fetchMovies = () => async (dispatch) => {
   try {
     dispatch(movieSlice.actions.moviesFetching());
     const response = await moviesApi.getMovies();
     dispatch(movieSlice.actions.moviesFetchingSuccess(response));
   } catch (e) {
-    console.log(e);
+    throw new Error(e);
   }
 };
 
-export default fetchMovies;

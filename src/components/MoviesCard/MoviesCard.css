@@ -15,10 +15,14 @@
 }
 
 .card__title {
+  max-width: 300px;
   margin: 0 0 9px;
   font-weight: 500;
   font-size: 15px;
   line-height: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .card__duration {
@@ -57,7 +61,7 @@
 }
 
 .card__trailer-link {
-  max-height: 203px;
+  min-height: 203px;
   transition: all .4s;
 }
 
@@ -73,13 +77,21 @@
 }
 
 @media screen and (max-width: 800px) {
+  .card__title {
+    max-width: 270px;
+  }
+
   .card__trailer-link {
-    max-height: 190px;
+    min-height: 190px;
   }
 }
 
 @media screen and (max-width: 375px) {
+  .card__title {
+    max-width: 230px;
+  }
+
   .card__trailer-link {
-    max-height: 168px;
+    min-height: 168px;
   }
 }

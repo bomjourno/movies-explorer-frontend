@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchMovies } from '../../store/reducers/actionCreators';
+import { movieSlice } from '../../store/reducers/movieSlice';
 import './SearchForm.css';
 
 function SearchForm({ children }) {
-  const [value, setValue] = useState('');
+  const [inputValue, setInputValue] = useState('');
+
+  const dispatch = useDispatch();
+  const { searchingMovie } = movieSlice.actions;
 
   function handleSubmit(e) {
     e.preventDefault();
+    dispatch(fetchMovies());
+    dispatch(searchingMovie(inputValue));
   }
 
   return (
@@ -15,8 +23,8 @@ function SearchForm({ children }) {
           type='text'
           className='search__form-input'
           placeholder='Фильм'
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
           required
         />
         <button className='search__form-submit' type='submit'></button>
