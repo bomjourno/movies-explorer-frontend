@@ -1,13 +1,13 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux/es/exports';
-import { movieSlice } from '../../store/reducers/movieSlice';
 import './FilterCheckbox.css';
 
-function FilterCheckbox() {
-  const dispatch = useDispatch();
-  const { isShortMovie } = useSelector((state) => state.movies);
-  const { toggleShortMovies } = movieSlice.actions;
+function FilterCheckbox({ isShortMovie, toggleShortMovies, dispatch = null }) {
+  function toggleCheckbox() {
+    if (dispatch === null) {
+      return toggleShortMovies(!isShortMovie);
+    }
+    return dispatch(toggleShortMovies(!isShortMovie));
+  }
 
   return (
     <div className='filter'>
@@ -15,7 +15,7 @@ function FilterCheckbox() {
         <input
           type='checkbox'
           className='filter__input'
-          onChange={() => dispatch(toggleShortMovies(!isShortMovie))}
+          onChange={toggleCheckbox}
           checked={isShortMovie}
         />
         <span className='filter__switch'></span>

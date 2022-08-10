@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Header from '../Header/Header';
 import './Profile.css';
 
 function Profile() {
-  const [name, setName] = useState('Матвей');
-  const [email, setEmail] = useState('test@mail.ru');
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.users);
+
+  const [userInfo, setUserInfo] = useState(user);
 
   function handleSubmit(e) {
     e.preventDefault();
   }
 
   function handleChangeName(e) {
-    setName(e.target.value);
+    setUserInfo((prevVal) => ({ ...prevVal, name: e.target.value }));
   }
 
   function handleChangeEmail(e) {
-    setEmail(e.target.value);
+    setUserInfo((prevVal) => ({ ...prevVal, email: e.target.value }));
   }
 
   return (
@@ -23,7 +26,7 @@ function Profile() {
       <Header />
       <section className='profile'>
         <div className='profile__container'>
-          <h2 className='profile__title'>Привет, Матвей!</h2>
+          <h2 className='profile__title'>Привет, {user.name}!</h2>
           <form className='profile__form' onSubmit={handleSubmit}>
             <label className='profile__label'>
               Имя
@@ -31,7 +34,7 @@ function Profile() {
                 name='name'
                 type='text'
                 className='profile__input'
-                value={name}
+                value={userInfo.name}
                 minLength={2}
                 maxLength={30}
                 onChange={handleChangeName}
@@ -43,7 +46,7 @@ function Profile() {
                 name='email'
                 type='email'
                 className='profile__input'
-                value={email}
+                value={userInfo.email}
                 onChange={handleChangeEmail}
               />
             </label>

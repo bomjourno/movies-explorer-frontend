@@ -33,16 +33,10 @@
 .login__label:first-child:before {
   position: absolute;
   top: -25px;
-  content: "Имя";
-}
-
-.login__label:nth-child(2)::before {
-  position: absolute;
-  top: -25px;
   content: "E-mail";
 }
 
-.login__label:nth-child(3)::before {
+.login__label:nth-child(2)::before {
   position: absolute;
   top: -25px;
   content: "Пароль";
@@ -86,6 +80,7 @@
 }
 
 .login__link-container {
+  position: relative;
   display: flex;
   justify-content: center;
   margin: 16px 0 0 0;
@@ -107,6 +102,27 @@
 
 .login__link:hover {
   opacity: .6;
+}
+
+.login__error {
+  visibility: hidden;
+  position: absolute;
+  opacity: 0;
+  bottom: 100px;
+  left: 50%;
+  width: 90%;
+  font-size: 12px;
+  line-height: 15px;
+  line-height: 1.2;
+  text-align: center;
+  color: #ee3465;
+  transform: translate(-50%, -50%);
+  transition: all .4s;
+}
+
+.login__error_show {
+  visibility: visible;
+  opacity: 1;
 }
 
 @media screen and (max-width: 768px) {

@@ -1,19 +1,12 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { fetchMovies } from '../../store/reducers/actionCreators';
-import { movieSlice } from '../../store/reducers/movieSlice';
 import './SearchForm.css';
 
-function SearchForm({ children }) {
-  const [inputValue, setInputValue] = useState('');
-
-  const dispatch = useDispatch();
-  const { searchingMovie } = movieSlice.actions;
+function SearchForm({ children, movieForSearch, findMovie }) {
+  const [inputValue, setInputValue] = useState(movieForSearch);
 
   function handleSubmit(e) {
     e.preventDefault();
-    dispatch(fetchMovies());
-    dispatch(searchingMovie(inputValue));
+    findMovie(inputValue);
   }
 
   return (

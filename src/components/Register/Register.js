@@ -1,27 +1,48 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import './Register.css';
 import logo from '../../images/logo.svg';
+import { registerUser } from '../../store/reducers/userSlice';
 
 function Register() {
-  const [name, setName] = useState('Матвей');
-  const [email, setEmail] = useState('test@mail.ru');
-  const [password, setPassword] = useState('12345678');
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isRegistered, isAuthorized } = useSelector((state) => state.users);
+
+  useEffect(() => {
+    if (isRegistered && isAuthorized === false) {
+      navigate('/sign-in');
+    }
+  }, [isRegistered]);
 
   function handleSubmit(e) {
     e.preventDefault();
+    dispatch(
+      registerUser({
+        name: userData.name,
+        email: userData.email,
+        password: userData.password,
+      }),
+    );
   }
 
   function handleChangeName(e) {
-    setName(e.target.value);
+    setUserData((prevVal) => ({ ...prevVal, name: e.target.value }));
   }
 
   function handleChangeEmail(e) {
-    setEmail(e.target.value);
+    setUserData((prevVal) => ({ ...prevVal, email: e.target.value }));
   }
 
   function handleChangePassword(e) {
-    setPassword(e.target.value);
+    setUserData((prevVal) => ({ ...prevVal, password: e.target.value }));
   }
 
   return (
@@ -36,7 +57,7 @@ function Register() {
             name='name'
             type='text'
             className='register__input'
-            value={name}
+            value={userData.name}
             minLength={2}
             maxLength={30}
             onChange={handleChangeName}
@@ -47,7 +68,7 @@ function Register() {
             name='email'
             type='email'
             className='register__input'
-            value={email}
+            value={userData.email}
             onChange={handleChangeEmail}
           />
         </label>
@@ -56,7 +77,7 @@ function Register() {
             name='password'
             type='password'
             className='register__input'
-            value={password}
+            value={userData.password}
             minLength={8}
             onChange={handleChangePassword}
           />

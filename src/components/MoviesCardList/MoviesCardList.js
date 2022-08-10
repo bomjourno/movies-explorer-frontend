@@ -12,13 +12,15 @@ import {
   TWO_MOVIES_FOR_MORE_BUTTON,
 } from '../../utils/constants';
 
-function MoviesCardList() {
-  const { movies } = useSelector((state) => state.movies);
-  const { isLoading } = useSelector((state) => state.movies);
-  const { isShortMovie } = useSelector((state) => state.movies);
-  const { movieForSearch } = useSelector((state) => state.movies);
+function MoviesCardList({
+  cardsList, setCardsList,
+  isShortMovie, movies,
+  isNotFound, movieForSearch,
+}) {
+  const {
+    isLoading, error,
+  } = useSelector((state) => state.movies);
 
-  const [cardsList, setCardsList] = useState(movies);
   const [width, setWidth] = useState(window.innerWidth);
   const [optionalCards, setOptionalCards] = useState(THREE_MOVIES_FOR_MORE_BUTTON);
   const [showedMovies, setShowedMovies] = useState(0);
@@ -40,14 +42,16 @@ function MoviesCardList() {
     return INITIAL_COUNT_MOVIES_DESKTOP;
   }, [width]);
 
+  function handleAddCards() {
+    setShowedMovies((prevVal) => prevVal + optionalCards);
+  }
+
   function getMovies() {
     if (movieForSearch) {
       setCardsList(movies.filter((movie) => `${movie.nameRU} ${movie.nameEN}`.toLowerCase().includes(movieForSearch.toLowerCase())));
+    } else {
+      setCardsList(movies);
     }
-  }
-
-  function handleAddCards() {
-    setShowedMovies((prevVal) => prevVal + optionalCards);
   }
 
   useEffect(() => {
@@ -56,7 +60,7 @@ function MoviesCardList() {
       // eslint-disable-next-line max-len
       setCardsList((prevVal) => prevVal.filter((movie) => movie.duration <= MAX_DURATION_SHORT_MOVIES));
     }
-  }, [isShortMovie, movieForSearch, movies]);
+  }, [isShortMovie, movieForSearch, movies, setCardsList]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -76,9 +80,10 @@ function MoviesCardList() {
         <>
           <div className='cards__list'>
             {cardsList.slice(0, showedMovies).map((movie) => (
-              <MoviesCard movie={movie} key={movie.id} />
+              <MoviesCard movie={movie} key={movie.id || movie._id} />
             ))}
           </div>
+          {error ? <p className='cards__error'>{error}</p> : isNotFound}
           {showedMovies < cardsList.length && (
             <button className="cards__button" onClick={handleAddCards}>
               Ещё

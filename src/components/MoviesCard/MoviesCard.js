@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import './MoviesCard.css';
+import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
+import { addFavoriteMovie } from '../../store/reducers/userSlice';
+import './MoviesCard.css';
 import { moviesApiUrl } from '../../utils/constants';
 
 function MoviesCard({ movie }) {
@@ -9,10 +11,18 @@ function MoviesCard({ movie }) {
   const location = useLocation();
   const isSavedMovies = location.pathname === '/saved-movies';
 
+  const dispatch = useDispatch();
+
   const filmName = movie.nameRU ? movie.nameRU : movie.nameEN;
-  const imageUrl = moviesApiUrl + movie.image.url;
+  const imageUrl = movie.image.formats ? moviesApiUrl + movie.image.url : movie.image;
   const hours = Math.floor(movie.duration / 60);
   const minutes = movie.duration % 60;
+
+  useEffect(() => {
+    if (isSaved) {
+      dispatch(addFavoriteMovie(movie));
+    }
+  }, [isSaved]);
 
   return (
     <div className='card'>
@@ -20,7 +30,8 @@ function MoviesCard({ movie }) {
         <div>
           <h3 className='card__title'>{filmName}</h3>
           <p className='card__duration'>{`${
-            hours === 0 ? '' : `${hours}ч`} ${minutes}м`}</p>
+            hours === 0 ? '' : `${hours}ч`
+          } ${minutes}м`}</p>
         </div>
         <button
           type='button'

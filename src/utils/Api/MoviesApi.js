@@ -1,4 +1,4 @@
-import { moviesApiUrl } from '../constants';
+import { infoMessages, moviesApiUrl } from '../constants';
 
 class MoviesApi {
   constructor(address) {
@@ -9,7 +9,9 @@ class MoviesApi {
   _handleResponse = (response) =>
     response.ok
       ? response.json()
-      : Promise.reject(`Error: ${response.message}`);
+      : response.json().then(() => {
+        throw new Error(infoMessages.requestMoviesFailed);
+      });;
 
   getMovies() {
     return fetch(`${this._address}/beatfilm-movies`).then(this._handleResponse);
