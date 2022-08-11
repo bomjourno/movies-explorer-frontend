@@ -47,6 +47,9 @@ function MoviesCardList({
   }
 
   function getMovies() {
+    if (movies) {
+      setCardsList(movies);
+    }
     if (movieForSearch) {
       setCardsList(movies.filter((movie) => `${movie.nameRU} ${movie.nameEN}`.toLowerCase().includes(movieForSearch.toLowerCase())));
     } else {

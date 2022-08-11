@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
 import logo from '../../images/logo.svg';
-import { authorizeUser } from '../../store/reducers/userSlice';
+import { logIn } from '../../store/reducers/userSlice';
 
 function Login() {
   const [userData, setUserData] = useState({
@@ -24,7 +24,7 @@ function Login() {
   function handleSubmit(e) {
     e.preventDefault();
     dispatch(
-      authorizeUser({ email: userData.email, password: userData.password }),
+      logIn({ email: userData.email, password: userData.password }),
     );
   }
 

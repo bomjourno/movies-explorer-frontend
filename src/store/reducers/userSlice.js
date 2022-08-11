@@ -20,14 +20,59 @@ export const registerUser = createAsyncThunk(
   },
 );
 
-export const authorizeUser = createAsyncThunk(
-  'user/authorizeUser',
+export const getUserMovies = createAsyncThunk(
+  'user/getUserMovies',
+  async function (_, { rejectWithValue, dispatch, getState }) {
+    try {
+      const user = getState().users.user;
+      await mainApi.getSavedMovies().then((res) => {
+        dispatch(
+          setUserMovies(res.filter((movie) => movie.owner === user._id)),
+        );
+      });
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const getUserData = createAsyncThunk(
+  'user/getUserData',
+  async function (_, { rejectWithValue, dispatch, getState }) {
+    try {
+      await mainApi.getCurrentUser().then((res) => {
+        dispatch(setUserInfo(res));
+      });
+      const user = getState().users.user;
+      await mainApi.getSavedMovies().then((res) => {
+        dispatch(
+          setUserMovies(res.filter((movie) => movie.owner === user._id)),
+        );
+      });
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const logIn = createAsyncThunk(
+  'user/logIn',
   async function ({ email, password }, { rejectWithValue, dispatch }) {
     try {
-      const response = await auth.login({ email, password }).then((user) => {
-        dispatch(setUserInfo(user));
-        dispatch(logOn());
-      });
+      await auth.login({ email, password });
+      dispatch(logOn(true));
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const logOut = createAsyncThunk(
+  'user/addFavoriteMovie',
+  async function (_, { rejectWithValue, dispatch }) {
+    try {
+      const response = await auth.logout();
+      dispatch(logOn(false));
 
       return response;
     } catch (error) {
@@ -38,7 +83,7 @@ export const authorizeUser = createAsyncThunk(
 
 export const addFavoriteMovie = createAsyncThunk(
   'user/addFavoriteMovie',
-  async function (movie, { rejectWithValue }) {
+  async function (movie, { rejectWithValue, dispatch }) {
     const body = {
       movieId: movie.id,
       country: movie.country || 'Неизвестно',
@@ -53,9 +98,26 @@ export const addFavoriteMovie = createAsyncThunk(
       nameEN: movie.nameEN || movie.nameRU,
     };
     try {
-      const response = await mainApi.saveMovie(body);
+      await mainApi.saveMovie(body).then((movie) => {
+        dispatch(addUserMovie(movie));
+      });
 
-      return response;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const removeFavoriteMovie = createAsyncThunk(
+  'user/removeFavoriteMovie',
+  async function (id, { rejectWithValue, dispatch, getState }) {
+    const savedMovies = getState().users.savedMovies;
+    try {
+      await mainApi.deleteMovie(id).then((res) => {
+        dispatch(
+          setUserMovies(savedMovies.filter((movie) => movie._id !== id)),
+        );
+      });
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -67,16 +129,14 @@ export const userSlice = createSlice({
   initialState: {
     user: {},
     savedMovies: [],
-    storageMovies: [],
-    favoriteMovieForSearch: '',
     isAuthorized: false,
     isRegistered: false,
     isLoading: false,
     error: '',
   },
   reducers: {
-    logOn(state) {
-      state.isAuthorized = true;
+    logOn(state, action) {
+      state.isAuthorized = action.payload;
     },
     signUp(state) {
       state.isRegistered = true;
@@ -87,11 +147,14 @@ export const userSlice = createSlice({
     setUserMovies(state, action) {
       state.savedMovies = action.payload;
     },
+    addUserMovie(state, action) {
+      state.savedMovies.push(action.payload)
+    },
     setStorageMovies(state, action) {
       state.storageMovies = action.payload;
     },
-    searchSavedMovie(state, action) {
-      state.favoriteMovieForSearch = action.payload;
+    deleteSavedMovies(state, action) {
+      state.savedMovies = action.payload;
     },
   },
   extraReducers: {
@@ -106,7 +169,7 @@ export const userSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
-    [authorizeUser.rejected]: (state, action) => {
+    [logIn.rejected]: (state, action) => {
       state.error = action.payload;
     },
   },
@@ -118,7 +181,9 @@ export const {
   setUserInfo,
   setUserMovies,
   setStorageMovies,
-  searchSavedMovie,
+  addUserMovie,
+  getUser,
+  deleteSavedMovies,
 } = userSlice.actions;
 
 export default userSlice.reducer;

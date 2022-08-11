@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux/es/exports';
-import { searchSavedMovie } from '../../store/reducers/userSlice';
+import { useSelector } from 'react-redux/es/exports';
 import { infoMessages } from '../../utils/constants';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import Footer from '../Footer/Footer';
@@ -11,15 +10,15 @@ import './SavedMovies.css';
 
 function SavedMovies() {
   const [isShortMovie, setIsShortMovie] = useState(false);
+  const [favoriteMovieForSearch, setFavoriteMovieForSearch] = useState('');
 
-  const { savedMovies, favoriteMovieForSearch } = useSelector((state) => state.users);
+  const { savedMovies } = useSelector((state) => state.users);
 
-  const dispatch = useDispatch();
   const [cardsList, setCardsList] = useState(savedMovies);
   const isNotFound = cardsList.length === 0 ? <p className='cards__error'>{infoMessages.moviesNotFound}</p> : null;
 
   function findMovie(value) {
-    dispatch(searchSavedMovie(value));
+    setFavoriteMovieForSearch(value);
   }
 
   return (

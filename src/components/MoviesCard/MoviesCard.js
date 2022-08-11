@@ -1,28 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import classNames from 'classnames';
-import { addFavoriteMovie } from '../../store/reducers/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addFavoriteMovie,
+  removeFavoriteMovie,
+} from '../../store/reducers/userSlice';
 import './MoviesCard.css';
 import { moviesApiUrl } from '../../utils/constants';
 
 function MoviesCard({ movie }) {
   const [isSaved, setIsSaved] = useState(false);
   const location = useLocation();
-  const isSavedMovies = location.pathname === '/saved-movies';
+  const path = location.pathname;
+  const savedMoviesRoute = path === '/saved-movies';
+  const { savedMovies } = useSelector((state) => state.users);
+  // eslint-disable-next-line max-len
+  const isSavedMovie = savedMovies.find((savedMovie) => savedMovie.movieId === (movie.id || movie.movieId));
+
+  useEffect(() => {
+    if (savedMovies) {
+      setIsSaved(isSavedMovie);
+    }
+  }, [savedMovies]);
 
   const dispatch = useDispatch();
+  const buttonClassName = (isSaved && !savedMoviesRoute && 'card__button_active') || (savedMoviesRoute && 'card__button-delete');
 
   const filmName = movie.nameRU ? movie.nameRU : movie.nameEN;
-  const imageUrl = movie.image.formats ? moviesApiUrl + movie.image.url : movie.image;
+  const imageUrl = movie.image.formats
+    ? moviesApiUrl + movie.image.url
+    : movie.image;
   const hours = Math.floor(movie.duration / 60);
   const minutes = movie.duration % 60;
 
-  useEffect(() => {
-    if (isSaved) {
+  function handleClickCard() {
+    if (savedMoviesRoute || isSavedMovie) {
+      dispatch(removeFavoriteMovie(movie._id || isSavedMovie._id));
+    } else {
       dispatch(addFavoriteMovie(movie));
     }
-  }, [isSaved]);
+  }
 
   return (
     <div className='card'>
@@ -35,11 +52,8 @@ function MoviesCard({ movie }) {
         </div>
         <button
           type='button'
-          className={classNames('card__button', {
-            card__button_active: isSavedMovies ? false : isSaved,
-            'card__button-delete': isSavedMovies,
-          })}
-          onClick={() => setIsSaved((prevVal) => !prevVal)}
+          className={`card__button ${buttonClassName}`}
+          onClick={handleClickCard}
         ></button>
       </div>
       <a

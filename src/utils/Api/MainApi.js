@@ -13,10 +13,6 @@ class MainApi {
       ? response.json()
       : Promise.reject(resMessages[response.status]);
 
-  getInitialData() {
-    return Promise.all([this.getCurrentUser(), this.getSavedMovies()]);
-  }
-
   getCurrentUser() {
     return fetch(`${this._address}/users/me`, {
       method: 'GET',
@@ -39,6 +35,14 @@ class MainApi {
       credentials: 'include',
       headers: this._headers,
       body: JSON.stringify(body),
+    }).then(this._handleResponse);
+  }
+
+  deleteMovie(id) {
+    return fetch(`${this._address}/movies/${id}`, {
+      method: 'DELETE',
+      credentials: 'include',
+      headers: this._headers,
     }).then(this._handleResponse);
   }
 }

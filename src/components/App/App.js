@@ -3,11 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Route, Routes, useNavigate, useLocation,
 } from 'react-router-dom';
+import { loadDataStorage } from '../../store/reducers/movieSlice';
 import {
-  logOn,
-  setStorageMovies,
-  setUserInfo,
-  setUserMovies,
+  getUserData, logOn,
 } from '../../store/reducers/userSlice';
 import mainApi from '../../utils/Api/MainApi';
 import Login from '../Login/Login';
@@ -22,36 +20,30 @@ import './App.css';
 
 function App() {
   const dispatch = useDispatch();
+  const { isAuthorized } = useSelector((state) => state.users);
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthorized } = useSelector((state) => state.users);
 
-  // function checkDataInStorage() {
-  //   const moviesLocalState = JSON.parse(
-  //     localStorage.getItem('moviesLocalState'),
-  //   );
-  //   if (moviesLocalState) {
-  //     dispatch(setStorageMovies(moviesLocalState));
-  //   }
-  // }
+  function checkDataInStorage() {
+    const moviesLocalState = JSON.parse(
+      localStorage.getItem('moviesLocalState'),
+    );
+    if (moviesLocalState) {
+      dispatch(loadDataStorage(moviesLocalState));
+    }
+  }
 
   useEffect(() => {
     if (!isAuthorized) {
-      mainApi.getCurrentUser().then((res) => {
-        dispatch(logOn());
-        dispatch(setUserInfo(res));
+      mainApi.getCurrentUser().then(() => {
+        dispatch(logOn(true));
         navigate(location.pathname);
       }).catch(() => console.log('Пользователь не авторизован'));
+    } else {
+      dispatch(getUserData());
+      checkDataInStorage();
     }
-  }, [isAuthorized]);
-
-  useEffect(() => {
-    if (isAuthorized) {
-      mainApi.getSavedMovies().then((res) => {
-        dispatch(setUserMovies(res));
-      });
-    }
-  }, [isAuthorized]);
+  }, [isAuthorized, dispatch]);
 
   return (
     <div className='page'>

@@ -1,6 +1,6 @@
 export const moviesApiUrl = 'https://api.nomoreparties.co';
-export const backendApiUrl = 'http://localhost:3001';
-// export const backendApiUrl = 'https://movies.watch.api.nomoredomains.xyz';
+// export const backendApiUrl = 'http://localhost:3001';
+export const backendApiUrl = 'https://movies.watch.api.nomoredomains.xyz';
 
 export const SCREEN_WIDTH_768 = 768;
 export const SCREEN_WIDTH_480 = 480;

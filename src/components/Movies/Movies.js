@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { movieSlice, fetchMovies } from '../../store/reducers/movieSlice';
+import {
+  fetchMovies, searchMovie, toggleShortMovies,
+} from '../../store/reducers/movieSlice';
 import { infoMessages } from '../../utils/constants';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import Footer from '../Footer/Footer';
@@ -13,12 +15,9 @@ function Movies() {
   const dispatch = useDispatch();
 
   const { isShortMovie, movies, movieForSearch } = useSelector((state) => state.movies);
-  const { storageMovies } = useSelector((state) => state.users);
-  const { toggleShortMovies, searchMovie } = movieSlice.actions;
+  const data = useSelector((state) => state.movies);
 
-  // const actualMovies = storageMovies || movies;
-  const [cardsList, setCardsList] = useState(movies);
-
+  const [cardsList, setCardsList] = useState([]);
   const isNotFound = movieForSearch && cardsList.length === 0 ? <p className='cards__error'>{infoMessages.moviesNotFound}</p> : null;
 
   function findMovie(value) {
@@ -26,9 +25,9 @@ function Movies() {
     dispatch(searchMovie(value));
   }
 
-  // useEffect(() => {
-  //   localStorage.setItem('moviesLocalState', JSON.stringify(cardsList));
-  // }, [cardsList]);
+  useEffect(() => {
+    localStorage.setItem('moviesLocalState', JSON.stringify({ ...data, movies: cardsList }));
+  }, [data, cardsList]);
 
   return (
     <>

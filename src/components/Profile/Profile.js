@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { logOut } from '../../store/reducers/userSlice';
 import Header from '../Header/Header';
 import './Profile.css';
 
@@ -19,6 +20,13 @@ function Profile() {
 
   function handleChangeEmail(e) {
     setUserInfo((prevVal) => ({ ...prevVal, email: e.target.value }));
+  }
+
+  function handleLogOut() {
+    dispatch(logOut());
+    if (localStorage.getItem('moviesLocalState')) {
+      localStorage.removeItem('moviesLocalState');
+    }
   }
 
   return (
@@ -60,6 +68,7 @@ function Profile() {
           <button
             type='button'
             className='profile__button profile__button_logout'
+            onClick={handleLogOut}
           >
             Выйти из аккаунта
           </button>

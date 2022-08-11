@@ -29,8 +29,11 @@ export const movieSlice = createSlice({
     toggleShortMovies(state, action) {
       state.isShortMovie = action.payload;
     },
-    saveMovie(state, action) {
-      state.savedMovies = action.payload;
+    loadDataStorage(state, action) {
+      state.movieForSearch = action.payload.movieForSearch;
+      state.movies = action.payload.movies;
+      state.isShortMovie = action.payload.isShortMovie;
+      state.error = action.payload.error;
     },
   },
   extraReducers: {
@@ -48,5 +51,7 @@ export const movieSlice = createSlice({
     },
   },
 });
+
+export const { searchMovie, toggleShortMovies, loadDataStorage } = movieSlice.actions;
 
 export default movieSlice.reducer;
