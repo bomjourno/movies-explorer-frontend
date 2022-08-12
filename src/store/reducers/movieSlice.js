@@ -3,13 +3,11 @@ import moviesApi from '../../utils/Api/MoviesApi';
 
 export const fetchMovies = createAsyncThunk(
   'movie/fetchMovies',
-  async function (_, { rejectWithValue }) {
-    try {
-      const response = await moviesApi.getMovies();
-      return response;
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
+  async function (_, { dispatch }) {
+    await moviesApi
+      .getMovies()
+      .then((res) => dispatch(saveMovies(res)))
+      .catch((err) => dispatch(handleMoviesError(err.message)));
   },
 );
 
@@ -37,23 +35,29 @@ export const movieSlice = createSlice({
     handleMoviesError(state, action) {
       state.error = action.payload;
     },
+    saveMovies(state, action) {
+      state.movies = action.payload;
+    },
   },
   extraReducers: {
     [fetchMovies.pending]: (state) => {
       state.isLoading = true;
     },
-    [fetchMovies.fulfilled]: (state, action) => {
+    [fetchMovies.fulfilled]: (state) => {
       state.isLoading = false;
-      state.error = '';
-      state.movies = action.payload;
     },
-    [fetchMovies.rejected]: (state, action) => {
+    [fetchMovies.rejected]: (state) => {
       state.isLoading = false;
-      state.error = action.payload;
     },
   },
 });
 
-export const { searchMovie, toggleShortMovies, loadDataStorage, handleMoviesError } = movieSlice.actions;
+export const {
+  searchMovie,
+  toggleShortMovies,
+  loadDataStorage,
+  handleMoviesError,
+  saveMovies,
+} = movieSlice.actions;
 
 export default movieSlice.reducer;

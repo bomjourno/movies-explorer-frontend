@@ -38,7 +38,7 @@ function App() {
       mainApi.getCurrentUser().then(() => {
         dispatch(logOn(true));
         navigate(location.pathname);
-      }).catch(() => console.log('Пользователь не авторизован'));
+      }).catch((err) => console.log(err.message));
     } else {
       dispatch(getUserData());
       checkDataInStorage();

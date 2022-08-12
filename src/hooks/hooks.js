@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import React, { useCallback } from 'react';
+import React from 'react';
 
 export function useFormWithValidation() {
   const [values, setValues] = React.useState({
@@ -18,15 +18,6 @@ export function useFormWithValidation() {
     setErrors({ ...errors, [name]: target.validationMessage });
     setIsValid(target.closest('form').checkValidity());
   };
-
-  const resetForm = useCallback(
-    (newValues = {}, newErrors = {}, newIsValid = false) => {
-      setValues(newValues);
-      setErrors(newErrors);
-      setIsValid(newIsValid);
-    },
-    [setValues, setErrors, setIsValid],
-  );
 
   return {
     values, handleChange, errors, isValid, setValues, setIsValid,

@@ -1,123 +1,120 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import auth from '../../utils/Api/Auth';
 import mainApi from '../../utils/Api/MainApi';
-import { infoMessages, moviesApiUrl } from '../../utils/constants';
+import { infoMessages, moviesApiUrl, resMessages } from '../../utils/constants';
 import { handleMoviesError } from './movieSlice';
 
 export const registerUser = createAsyncThunk(
   'user/registerUser',
-  async function ({ name, email, password }, { rejectWithValue, dispatch }) {
-    try {
-      const response = await auth
-        .registration({ name, email, password })
-        .then(({ email }) => {
-          auth.login({ email, password }).then(() => {
-            dispatch(logOn(true));
-          });
+  async function ({ name, email, password }, { dispatch }) {
+    await auth
+      .registration({ name, email, password })
+      .then(({ email }) => {
+        auth.login({ email, password }).then(() => {
+          dispatch(logOn(true));
         });
-
-      return response;
-    } catch (error) {
-      setTimeout(() => {
-        dispatch(handleUserError(''));
-      }, 3000);
-      return rejectWithValue(error.message);
-    }
+      })
+      .catch((err) => {
+        dispatch(handleUserError(err.message));
+        setTimeout(() => {
+          dispatch(handleUserError(''));
+        }, 3000);
+      });
   },
 );
 
 export const getUserData = createAsyncThunk(
   'user/getUserData',
-  async function (_, { rejectWithValue, dispatch, getState }) {
-    try {
-      await mainApi
-        .getCurrentUser()
-        .then((res) => {
-          dispatch(setUserInfo(res));
-        })
-        .catch(() => {
-          if (getState().users.user) {
-            dispatch(
-              handleMoviesError(
-                `Невозможно получить данные о пользователе, выход из системы через 5 секунд`,
-              ),
-            );
-            setTimeout(() => {
-              dispatch(logOn(false));
-              dispatch(handleMoviesError(''));
-            }, 5000);
-          }
-        });
-      const user = getState().users.user;
-      await mainApi
-        .getSavedMovies()
-        .then((res) => {
+  async function (_, { dispatch, getState }) {
+    await mainApi
+      .getCurrentUser()
+      .then((res) => {
+        dispatch(setUserInfo(res));
+      })
+      .catch(() => {
+        if (getState().users.user) {
           dispatch(
-            setUserMovies(res.filter((movie) => movie.owner === user._id)),
+            handleMoviesError(
+              `Невозможно получить данные о пользователе, выход из системы через 5 секунд`,
+            ),
           );
-        })
-        .catch(() =>
-          dispatch(handleUserError(infoMessages.requestMoviesFailed)),
+          setTimeout(() => {
+            dispatch(logOn(false));
+            dispatch(handleMoviesError(''));
+          }, 5000);
+        }
+      });
+
+    const user = getState().users.user;
+    await mainApi
+      .getSavedMovies()
+      .then((res) => {
+        dispatch(
+          setUserMovies(res.filter((movie) => movie.owner === user._id)),
         );
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
+      })
+      .catch(() => {
+        dispatch(handleUserError(infoMessages.requestMoviesFailed));
+        setTimeout(() => {
+          dispatch(handleUserError(''));
+        }, 5000);
+      });
   },
 );
 
 export const logIn = createAsyncThunk(
   'user/logIn',
-  async function ({ email, password }, { rejectWithValue, dispatch }) {
-    try {
-      await auth.login({ email, password }).then(() => {
+  async function ({ email, password }, { dispatch }) {
+    await auth
+      .login({ email, password })
+      .then(() => {
         dispatch(logOn(true));
+      })
+      .catch((err) => {
+        dispatch(handleUserError(err.message));
+        setTimeout(() => {
+          dispatch(handleUserError(''));
+        }, 3000);
       });
-    } catch (error) {
-      setTimeout(() => {
-        dispatch(handleUserError(''));
-      }, 3000);
-      return rejectWithValue(error.message);
-    }
   },
 );
 
 export const updateUserInfo = createAsyncThunk(
   'user/updateUserInfo',
   async function ({ email, name }, { rejectWithValue, dispatch }) {
-    try {
-      await mainApi.updateUser({ email, name }).then((res) => {
-        console.log(res);
+    await mainApi
+      .updateUser({ email, name })
+      .then((res) => {
+        dispatch(handleUserSuccess(infoMessages.successUpdateUserInfo));
         dispatch(setUserInfo(res));
         setTimeout(() => {
           dispatch(handleUserSuccess(''));
         }, 3000);
+      })
+      .catch((err) => {
+        dispatch(handleUserError(err.message));
+        setTimeout(() => {
+          dispatch(handleUserError(''));
+        }, 3000);
       });
-    } catch (error) {
-      setTimeout(() => {
-        dispatch(handleUserError(''));
-      }, 3000);
-      return rejectWithValue(error.message);
-    }
   },
 );
 
 export const logOut = createAsyncThunk(
   'user/addFavoriteMovie',
-  async function (_, { rejectWithValue, dispatch }) {
-    try {
-      const response = await auth.logout();
-      dispatch(logOn(false));
-
-      return response;
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
+  async function (_, { dispatch }) {
+    await auth
+      .logout()
+      .then(() => {
+        dispatch(logOn(false));
+      })
+      .catch(() => dispatch(handleUserError(resMessages[500])));
   },
 );
 
 export const addFavoriteMovie = createAsyncThunk(
   'user/addFavoriteMovie',
-  async function (movie, { rejectWithValue, dispatch }) {
+  async function (movie, { dispatch }) {
     const body = {
       movieId: movie.id,
       country: movie.country || 'Неизвестно',
@@ -131,53 +128,45 @@ export const addFavoriteMovie = createAsyncThunk(
       nameRU: movie.nameRU,
       nameEN: movie.nameEN || movie.nameRU,
     };
-    try {
-      await mainApi
-        .saveMovie(body)
-        .then((movie) => {
-          dispatch(addUserMovie(movie));
-        })
-        .catch(() => {
-          dispatch(handleMoviesError(infoMessages.requestMoviesFailed));
-          setTimeout(() => {
-            dispatch(handleMoviesError(''));
-          }, 5000);
-        });
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
+    await mainApi
+      .saveMovie(body)
+      .then((movie) => {
+        dispatch(addUserMovie(movie));
+      })
+      .catch(() => {
+        dispatch(handleMoviesError(infoMessages.requestMoviesFailed));
+        setTimeout(() => {
+          dispatch(handleMoviesError(''));
+        }, 5000);
+      });
   },
 );
 
 export const removeFavoriteMovie = createAsyncThunk(
   'user/removeFavoriteMovie',
-  async function ({ id, location }, { rejectWithValue, dispatch, getState }) {
+  async function ({ id, location }, { dispatch, getState }) {
     const savedMovies = getState().users.savedMovies;
-    try {
-      await mainApi
-        .deleteMovie(id)
-        .then((res) => {
-          dispatch(
-            setUserMovies(savedMovies.filter((movie) => movie._id !== id)),
-          );
-        })
-        .catch(() => {
-          console.log(location);
-          if (location === '/movies') {
-            dispatch(handleMoviesError(infoMessages.requestMoviesFailed));
-            setTimeout(() => {
-              dispatch(handleMoviesError(''));
-            }, 5000);
-          } else {
-            dispatch(handleUserError(infoMessages.requestMoviesFailed));
-            setTimeout(() => {
-              dispatch(handleUserError(''));
-            }, 5000);
-          }
-        });
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
+    await mainApi
+      .deleteMovie(id)
+      .then((res) => {
+        dispatch(
+          setUserMovies(savedMovies.filter((movie) => movie._id !== id)),
+        );
+      })
+      .catch(() => {
+        console.log(location);
+        if (location === '/movies') {
+          dispatch(handleMoviesError(infoMessages.requestMoviesFailed));
+          setTimeout(() => {
+            dispatch(handleMoviesError(''));
+          }, 5000);
+        } else {
+          dispatch(handleUserError(infoMessages.requestMoviesFailed));
+          setTimeout(() => {
+            dispatch(handleUserError(''));
+          }, 5000);
+        }
+      });
   },
 );
 
@@ -223,29 +212,15 @@ export const userSlice = createSlice({
     },
     [registerUser.fulfilled]: (state) => {
       state.isLoading = false;
-      state.error = '';
-    },
-    [registerUser.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
     },
     [updateUserInfo.pending]: (state) => {
       state.isLoading = true;
     },
     [updateUserInfo.fulfilled]: (state) => {
-      state.success = infoMessages.successUpdateUserInfo;
       state.isLoading = false;
     },
-    [updateUserInfo.rejected]: (state, action) => {
-      state.error = action.payload;
+    [updateUserInfo.rejected]: (state) => {
       state.isLoading = false;
-    },
-    [logIn.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
-    [getUserData.rejected]: (state, action) => {
-      state.error = action.payload;
     },
   },
 });
