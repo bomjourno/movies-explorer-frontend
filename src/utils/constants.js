@@ -16,6 +16,7 @@ export const MAX_DURATION_SHORT_MOVIES = 40;
 
 export const infoMessages = {
   moviesNotFound: 'Ничего не найдено',
+  successUpdateUserInfo: 'Данные изменены',
   requestMoviesFailed:
     'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз',
 };

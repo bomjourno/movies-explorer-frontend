@@ -1,48 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import './Register.css';
 import logo from '../../images/logo.svg';
 import { registerUser } from '../../store/reducers/userSlice';
+import { useFormWithValidation } from '../../hooks/hooks';
 
 function Register() {
-  const [userData, setUserData] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
+  const {
+    values, handleChange, errors, isValid,
+  } = useFormWithValidation();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isRegistered, isAuthorized } = useSelector((state) => state.users);
+  const {
+    isAuthorized, error,
+  } = useSelector(
+    (state) => state.users,
+  );
 
   useEffect(() => {
-    if (isRegistered && isAuthorized === false) {
-      navigate('/sign-in');
+    if (isAuthorized) {
+      navigate('/movies');
     }
-  }, [isRegistered]);
+  }, [isAuthorized]);
 
   function handleSubmit(e) {
     e.preventDefault();
     dispatch(
       registerUser({
-        name: userData.name,
-        email: userData.email,
-        password: userData.password,
+        name: values.name,
+        email: values.email,
+        password: values.password,
       }),
     );
-  }
-
-  function handleChangeName(e) {
-    setUserData((prevVal) => ({ ...prevVal, name: e.target.value }));
-  }
-
-  function handleChangeEmail(e) {
-    setUserData((prevVal) => ({ ...prevVal, email: e.target.value }));
-  }
-
-  function handleChangePassword(e) {
-    setUserData((prevVal) => ({ ...prevVal, password: e.target.value }));
   }
 
   return (
@@ -56,37 +48,46 @@ function Register() {
           <input
             name='name'
             type='text'
-            className='register__input'
-            value={userData.name}
+            className={classNames('register__input', { register__input_error: errors.name })}
+            value={values.name}
             minLength={2}
             maxLength={30}
-            onChange={handleChangeName}
+            pattern="[а-яА-Яa-zA-ZёË\- ]{1,}"
+            required
+            onChange={handleChange}
           />
+          <span className='register__error-input'>{errors.name}</span>
         </label>
         <label className='register__label'>
           <input
             name='email'
             type='email'
-            className='register__input'
-            value={userData.email}
-            onChange={handleChangeEmail}
+            className={classNames('register__input', { register__input_error: errors.email })}
+            value={values.email}
+            pattern="^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$"
+            required
+            onChange={handleChange}
           />
+          <span className='register__error-input'>{errors.email}</span>
         </label>
         <label className='register__label'>
           <input
             name='password'
             type='password'
-            className='register__input'
-            value={userData.password}
+            className={classNames('register__input', { register__input_error: errors.password })}
+            value={values.password}
             minLength={8}
-            onChange={handleChangePassword}
+            required
+            onChange={handleChange}
           />
+          <span className='register__error-input'>{errors.password}</span>
         </label>
-        <button className='register__button' type='submit'>
+        <button disabled={!isValid} className={classNames('register__button', { register__button_disabled: !isValid })} type='submit'>
           Зарегистрироваться
         </button>
       </form>
       <div className='register__link-container'>
+        {error && <span className='register__error-general'>{error}</span>}
         <p className='register__link-text'>Уже зарегестрированны?&nbsp;</p>
         <Link to='/sign-in' className='register__link'>
           Войти

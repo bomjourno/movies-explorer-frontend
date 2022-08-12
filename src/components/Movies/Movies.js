@@ -14,7 +14,9 @@ import './Movies.css';
 function Movies() {
   const dispatch = useDispatch();
 
-  const { isShortMovie, movies, movieForSearch } = useSelector((state) => state.movies);
+  const {
+    isShortMovie, movies, movieForSearch, error,
+  } = useSelector((state) => state.movies);
   const data = useSelector((state) => state.movies);
 
   const [cardsList, setCardsList] = useState([]);
@@ -26,8 +28,8 @@ function Movies() {
   }
 
   useEffect(() => {
-    localStorage.setItem('moviesLocalState', JSON.stringify({ ...data, movies: cardsList }));
-  }, [data, cardsList]);
+    localStorage.setItem('moviesLocalState', JSON.stringify({ ...data, movies }));
+  }, [data, cardsList, isShortMovie]);
 
   return (
     <>
@@ -47,6 +49,7 @@ function Movies() {
           isNotFound={isNotFound}
           movieForSearch={movieForSearch}
           movies={movies}
+          error={error}
         />
       </main>
       <Footer />

@@ -12,10 +12,10 @@ function SavedMovies() {
   const [isShortMovie, setIsShortMovie] = useState(false);
   const [favoriteMovieForSearch, setFavoriteMovieForSearch] = useState('');
 
-  const { savedMovies } = useSelector((state) => state.users);
+  const { savedMovies, error } = useSelector((state) => state.users);
 
   const [cardsList, setCardsList] = useState(savedMovies);
-  const isNotFound = cardsList.length === 0 ? <p className='cards__error'>{infoMessages.moviesNotFound}</p> : null;
+  const isNotFound = favoriteMovieForSearch && cardsList.length === 0 ? <p className='cards__error'>{infoMessages.moviesNotFound}</p> : null;
 
   function findMovie(value) {
     setFavoriteMovieForSearch(value);
@@ -38,6 +38,7 @@ function SavedMovies() {
           isNotFound={isNotFound}
           movies={savedMovies}
           movieForSearch={favoriteMovieForSearch}
+          error={error}
         />
       </main>
       <Footer />

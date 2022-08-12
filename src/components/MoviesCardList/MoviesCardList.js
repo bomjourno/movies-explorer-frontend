@@ -16,9 +16,10 @@ function MoviesCardList({
   cardsList, setCardsList,
   isShortMovie, movies,
   isNotFound, movieForSearch,
+  error,
 }) {
   const {
-    isLoading, error,
+    isLoading,
   } = useSelector((state) => state.movies);
 
   const [width, setWidth] = useState(window.innerWidth);
@@ -82,12 +83,12 @@ function MoviesCardList({
       ) : (
         <>
           <div className='cards__list'>
-            {cardsList.slice(0, showedMovies).map((movie) => (
+            {error ? '' : cardsList.slice(0, showedMovies).map((movie) => (
               <MoviesCard movie={movie} key={movie.id || movie._id} />
             ))}
           </div>
           {error ? <p className='cards__error'>{error}</p> : isNotFound}
-          {showedMovies < cardsList.length && (
+          {(showedMovies < cardsList.length && !error) && (
             <button className="cards__button" onClick={handleAddCards}>
               Ещё
             </button>

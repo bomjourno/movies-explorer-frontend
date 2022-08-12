@@ -35,7 +35,7 @@ function MoviesCard({ movie }) {
 
   function handleClickCard() {
     if (savedMoviesRoute || isSavedMovie) {
-      dispatch(removeFavoriteMovie(movie._id || isSavedMovie._id));
+      dispatch(removeFavoriteMovie({ id: movie._id || isSavedMovie._id, location: path }));
     } else {
       dispatch(addFavoriteMovie(movie));
     }

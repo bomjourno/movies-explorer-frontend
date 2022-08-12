@@ -33,14 +33,6 @@ class Auth {
     }).then(this._handleResponse);
   }
 
-  // authentication() {
-  //   return fetch(`${this._address}/users/me`, {
-  //     method: 'GET',
-  //     credentials: 'include',
-  //     headers: this._headers,
-  //   }).then(this._handleResponse);
-  // }
-
   logout() {
     return fetch(`${this._address}/signout`, {
       method: 'GET',
