@@ -40,7 +40,7 @@ function Portfolio() {
         <li className='portfolio__list-item'>
           <a
             className='portfolio__list-link'
-            href='https://bomjourno.github.io/react-mesto-auth/'
+            href='https://hppynewfear.nomoredomains.xyz'
             target='_blank'
             rel='noreferrer'
           >

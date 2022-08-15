@@ -1,12 +1,18 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import './NotFoundPage.css';
 
 const NotFoundPage = () => {
   const navigate = useNavigate();
+  const { isAuthorized } = useSelector((state) => state.users);
 
   function handleClickBack() {
-    navigate(-1);
+    if (isAuthorized) {
+      navigate(-2);
+    } else {
+      navigate('/');
+    }
   }
 
   return (

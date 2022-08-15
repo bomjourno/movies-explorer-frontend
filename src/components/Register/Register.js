@@ -1,27 +1,40 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import classNames from 'classnames';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import './Register.css';
 import logo from '../../images/logo.svg';
+import { registerUser } from '../../store/reducers/userSlice';
+import { useFormWithValidation } from '../../hooks/hooks';
 
 function Register() {
-  const [name, setName] = useState('Матвей');
-  const [email, setEmail] = useState('test@mail.ru');
-  const [password, setPassword] = useState('12345678');
+  const {
+    values, handleChange, errors, isValid,
+  } = useFormWithValidation();
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {
+    isAuthorized, error,
+  } = useSelector(
+    (state) => state.users,
+  );
+
+  useEffect(() => {
+    if (isAuthorized) {
+      navigate('/movies');
+    }
+  }, [isAuthorized]);
 
   function handleSubmit(e) {
     e.preventDefault();
-  }
-
-  function handleChangeName(e) {
-    setName(e.target.value);
-  }
-
-  function handleChangeEmail(e) {
-    setEmail(e.target.value);
-  }
-
-  function handleChangePassword(e) {
-    setPassword(e.target.value);
+    dispatch(
+      registerUser({
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      }),
+    );
   }
 
   return (
@@ -35,37 +48,46 @@ function Register() {
           <input
             name='name'
             type='text'
-            className='register__input'
-            value={name}
+            className={classNames('register__input', { register__input_error: errors.name })}
+            value={values.name}
             minLength={2}
             maxLength={30}
-            onChange={handleChangeName}
+            pattern="[а-яА-Яa-zA-ZёË\- ]{1,}"
+            required
+            onChange={handleChange}
           />
+          <span className='register__error-input'>{errors.name}</span>
         </label>
         <label className='register__label'>
           <input
             name='email'
             type='email'
-            className='register__input'
-            value={email}
-            onChange={handleChangeEmail}
+            className={classNames('register__input', { register__input_error: errors.email })}
+            value={values.email}
+            pattern="^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$"
+            required
+            onChange={handleChange}
           />
+          <span className='register__error-input'>{errors.email}</span>
         </label>
         <label className='register__label'>
           <input
             name='password'
             type='password'
-            className='register__input'
-            value={password}
+            className={classNames('register__input', { register__input_error: errors.password })}
+            value={values.password}
             minLength={8}
-            onChange={handleChangePassword}
+            required
+            onChange={handleChange}
           />
+          <span className='register__error-input'>{errors.password}</span>
         </label>
-        <button className='register__button' type='submit'>
+        <button disabled={!isValid} className={classNames('register__button', { register__button_disabled: !isValid })} type='submit'>
           Зарегистрироваться
         </button>
       </form>
       <div className='register__link-container'>
+        {error && <span className='register__error-general'>{error}</span>}
         <p className='register__link-text'>Уже зарегестрированны?&nbsp;</p>
         <Link to='/sign-in' className='register__link'>
           Войти

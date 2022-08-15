@@ -1,3 +1,12 @@
+@keyframes showError {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .profile {
   display: flex;
   flex-direction: column;
@@ -64,6 +73,10 @@
   border: 0;
 }
 
+.profile__input_error {
+  color: #ee3465;
+}
+
 .profile__button {
   padding: 0;
   font-weight: 400;
@@ -81,6 +94,42 @@
 .profile__button_logout {
   font-weight: 500;
   color: red;
+}
+
+.profile__button_disable {
+  cursor: auto;
+}
+
+.profile__error-input {
+  position: absolute;
+  bottom: -17px;
+  right: 0;
+  height: 15px;
+  font-size: 10px;
+  line-height: 12px;
+  color: #ee3465;
+  text-align: right;
+  animation: showError .4s;
+}
+
+.register__general {
+  visibility: visible;
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  width: 100%;
+  font-size: 12px;
+  line-height: 15px;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  animation: showError .4s;
+}
+.register__general_error {
+  color: #ee3465;
+}
+
+.register__general_success {
+  color: green;
 }
 
 @media screen and (max-width: 768px) {

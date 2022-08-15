@@ -1,3 +1,12 @@
+@keyframes showError {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .login {
   display: flex;
   flex-direction: column;
@@ -19,7 +28,7 @@
 .login__form {
   display: flex;
   flex-direction: column;
-  gap: 42px;
+  gap: 52px;
 }
 
 .login__label {
@@ -33,16 +42,10 @@
 .login__label:first-child:before {
   position: absolute;
   top: -25px;
-  content: "Имя";
-}
-
-.login__label:nth-child(2)::before {
-  position: absolute;
-  top: -25px;
   content: "E-mail";
 }
 
-.login__label:nth-child(3)::before {
+.login__label:nth-child(2)::before {
   position: absolute;
   top: -25px;
   content: "Пароль";
@@ -60,6 +63,10 @@
   border-radius: 8px;
   transition: all .4s;
   box-sizing: border-box;
+}
+
+.login__input_error {
+  color: #ee3465;
 }
 
 .login__input:focus {
@@ -85,7 +92,14 @@
   opacity: .8;
 }
 
+.login__button_disabled {
+  background: #9f9f9f;
+  cursor: auto;
+  opacity: .8;
+}
+
 .login__link-container {
+  position: relative;
   display: flex;
   justify-content: center;
   margin: 16px 0 0 0;
@@ -107,6 +121,31 @@
 
 .login__link:hover {
   opacity: .6;
+}
+
+.login__error-general {
+  visibility: visible;
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  width: 90%;
+  font-size: 12px;
+  line-height: 15px;
+  text-align: center;
+  color: #ee3465;
+  transform: translate(-50%, -50%);
+  animation: showError .4s;
+}
+
+.login__error-input {
+  position: absolute;
+  bottom: -17px;
+  left: 0;
+  height: 15px;
+  font-size: 10px;
+  line-height: 12px;
+  color: #ee3465;
+  animation: showError .4s;
 }
 
 @media screen and (max-width: 768px) {

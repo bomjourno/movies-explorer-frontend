@@ -1,3 +1,15 @@
+@keyframes shake {
+  25% {
+    transform: translateX(5px);
+  }
+  50% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
 .cards {
   display: flex;
   flex-direction: column;
@@ -32,6 +44,17 @@
 .cards__button:hover {
   opacity: 0.8;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.cards__error {
+  max-width: 90%;
+  margin: 0 auto;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  text-align: center;
+  color: red;
+  animation: shake 300ms;
 }
 
 @media screen and (max-width: 800px) {

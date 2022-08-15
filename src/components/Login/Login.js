@@ -1,22 +1,29 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import classNames from 'classnames';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
 import logo from '../../images/logo.svg';
+import { logIn } from '../../store/reducers/userSlice';
+import { useFormWithValidation } from '../../hooks/hooks';
 
 function Login() {
-  const [email, setEmail] = useState('test@mail.ru');
-  const [password, setPassword] = useState('12345678');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isAuthorized, error } = useSelector((state) => state.users);
+  const {
+    values, handleChange, errors, isValid,
+  } = useFormWithValidation();
+
+  useEffect(() => {
+    if (isAuthorized) {
+      navigate('/movies');
+    }
+  }, [isAuthorized]);
 
   function handleSubmit(e) {
     e.preventDefault();
-  }
-
-  function handleChangeEmail(e) {
-    setEmail(e.target.value);
-  }
-
-  function handleChangePassword(e) {
-    setPassword(e.target.value);
+    dispatch(logIn({ email: values.email, password: values.password }));
   }
 
   return (
@@ -30,26 +37,32 @@ function Login() {
           <input
             name='email'
             type='email'
-            className='login__input'
-            value={email}
-            onChange={handleChangeEmail}
+            className={classNames('login__input', { login__input_error: errors.email })}
+            value={values.email}
+            onChange={handleChange}
+            required
           />
+          <span className='login__error-input'>{errors.email}</span>
         </label>
         <label className='login__label'>
           <input
             name='password'
             type='password'
-            className='login__input'
-            value={password}
+            className={classNames('login__input', { login__input_error: errors.password })}
+            value={values.password}
             minLength={8}
-            onChange={handleChangePassword}
+            required
+            onChange={handleChange}
           />
+          <span className='login__error-input'>{errors.password}</span>
         </label>
-        <button className='login__button' type='submit'>
+
+        <button disabled={!isValid} className={classNames('login__button', { login__button_disabled: !isValid })} type='submit'>
           Войти
         </button>
       </form>
       <div className='login__link-container'>
+        {error && <span className='login__error-general'>{error}</span>}
         <p className='login__link-text'>Еще не зарегестрированны?&nbsp;</p>
         <Link to='/sign-up' className='login__link'>
           Регистрация

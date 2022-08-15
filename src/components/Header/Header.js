@@ -1,6 +1,7 @@
-import classNames from 'classnames';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
+import classNames from 'classnames';
 import logo from '../../images/logo.svg';
 import account from '../../images/account.svg';
 import './Header.css';
@@ -9,7 +10,8 @@ function Header() {
   const [burgerMenuIsOpen, setBurgerMenuIsOpen] = useState(false);
   const location = useLocation();
   const isActiveTab = location.pathname;
-  const loggedIn = false; // временно Для показа состояний шапки
+
+  const { isAuthorized } = useSelector((state) => state.users);
 
   return (
     <header className='header'>
@@ -17,7 +19,7 @@ function Header() {
         <img src={logo} alt='Логотип' className='header__logo' />
       </Link>
 
-      {loggedIn ? (
+      {isAuthorized ? (
         <div className='header__navigation-wrapper'>
           <nav className='header__navigation'>
             <ul className='header__list header__list_authorized'>
